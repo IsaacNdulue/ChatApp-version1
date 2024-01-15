@@ -59,7 +59,7 @@
                 prompt("please enter a valid name")
             }
         document.querySelector('h1').innerHTML =` Hello ${userName}`;
-        const socket = io('http://localhost:2000');
+        const socket = io('https://chatapp-a6fh.onrender.com')
 
         socket.on('message', (data) => {
             const chatDiv = document.getElementById('chat');

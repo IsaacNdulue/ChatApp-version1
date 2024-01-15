@@ -5,10 +5,10 @@ const port=2000
 const app = express()
 const server=http.createServer(app)
 const io=socket(server)
-
+// const cors = require('cors')
 
 app.set("view engine","ejs")
-
+// app.use(cors())
 
 app.get("/",(req,res)=>{
 
