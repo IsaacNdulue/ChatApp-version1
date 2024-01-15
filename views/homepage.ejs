@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: rgb(245, 234, 234);
+        }
+
+        #chat {
+            border: 2px solid #0f0d0d;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: auto;
+            overflow-y: scroll;
+            background-color: rgb(209, 250, 252);
+            border-radius: 10px;
+        }
+
+        .message {
+            background-color: rgb(93, 241, 93);
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+        }
+
+        #messageInput {
+            width: 85%;
+            height:50%;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 90px;
+            background-color:rgb(211, 201, 201);
+        }
+
+        button {
+            padding: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: blue;
+             border-radius: 100%;
+       
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: rgb(36, 33, 33);">Hello </h1>
+    <div id="chat"></div>
+    <input type="text" placeholder="Type your message here", class="sendmsg" id="messageInput">
+    <button onclick="sendChat()">Send</button>
+
+    <script>
+        const userName = prompt('Enter your username');
+        if(userName.length<2 || userName == null){
+                prompt("please enter a valid name")
+            }
+        document.querySelector('h1').innerHTML =` Hello ${userName}`;
+        const socket = io('http://localhost:2000');
+
+        socket.on('message', (data) => {
+            const chatDiv = document.getElementById('chat');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.textContent = data;
+            chatDiv.appendChild(messageDiv);
+        });
+
+        const sendChat = () => {
+            const msgInput = document.getElementById('messageInput');
+            const msg = msgInput.value;
+
+            if (msg.trim() !== '') {
+                socket.emit('message', `Message from ${userName}: ${msg}`);
+                msgInput.value = '';  // Clear the input field
+            }
+        };
+    </script>
+</body>
+</html>
